@@ -1,30 +1,30 @@
 <template>
 <div class="sign-container">
   <!-- ログインフォーム -->
-  <form class="container" v-if="login">
+  <form class="container" v-if="login" onSubmit="return false">
     <div class="login-register">
       <span @click="changeLogin" :class={active:login} class="login">Login</span>
       <span @click="changeRegister" :class={active:register} class="register">Register</span>
     </div>
     <label> Email </label>
-    <input type="text">
+    <input v-model="loginEmail" type="text">
     <label> Password </label>
-    <input type="text">
-    <button @click="goHome" type="submit">Login</button>
+    <input v-model="loginPass" type="text">
+    <button @click="onLogin" type="submit">Login</button>
   </form>
   <!-- 登録フォーム -->
-  <form class="container" v-else>
+  <form class="container" v-else onSubmit="return false">
     <div class="login-register">
       <span @click="changeLogin" :class={active:login} class="login">Login</span>
       <span @click="changeRegister" :class={active:register} class="register">Register</span>
     </div>
     <label> UserName </label>
-    <input type="text">
+    <input v-model="name" type="text">
     <label> Email</label>
-    <input type="text">
+    <input v-model="registerEmail" type="text">
     <label> Password </label>
-    <input type="text">
-    <button @click="goNewUser" type="submit">Register</button>
+    <input v-model="registerPass" type="text">
+    <button @click="onRegister" type="submit">Register</button>
   </form>
 
   <button class="guest-login">GuestLogin</button>
@@ -32,11 +32,18 @@
 </template>
 
 <script>
+
+
   export default {
     data () {
       return{
         login:true,
         register:false,
+        loginEmail:'',
+        loginPass:'',
+        name:'',
+        registerEmail:'',
+        registerPass:'',
       }
     },
     methods:{
@@ -50,11 +57,23 @@
         this.register = !this.register
       },
       // ユーザー情報登録ページへ遷移
-      goNewUser () {
+      async onRegister () {
+        const registerData = {
+          name:this.name,
+          registerEmail:this.registerEmail,
+          registerPass:this.registerPass,
+        }
+        await this.$store.dispatch('auth/register', registerData)
+        console.log('いける')
         this.$router.push('newuser')
       },
-      // ホームへ遷移
-      goHome () {
+      // ログイン処理、ホーム画面遷移
+      async onLogin () {
+        const loginData = {
+          loginEmail:this.loginEmail,
+          loginPass:this.loginPass,
+        }
+        await this.$store.dispatch('auth/login', loginData)
         this.$router.push('/')
       },
     }

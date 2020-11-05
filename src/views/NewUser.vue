@@ -1,23 +1,18 @@
 <template>
   <div>
     <h1>Profile Image</h1>
-    <div class="img-container"></div>
+    <div class="img-container" @click="onSetImg">
+      <img ref="image" :src="preview" alt="">
+      <span><font-awesome-icon icon="camera"/></span>
+    </div>
     <h1>Profile Text</h1>
-    <textarea></textarea>
+    <textarea v-model="introduction"></textarea>
     <h1>Profile Tags</h1>
     <div class="buttons">
-      <button>アニメ</button>
-      <button>ゲーム</button>
-      <button>映画</button>
-      <button>アクション</button>
-      <button>恋愛</button>
-      <button>スポーツ</button>
-      <button>SF</button>
-      <button>ホラー</button>
-      <button>ネタバレあり</button>
-      <button>ネタバレなし</button>
+      <button @click="selectTag(tag,index)" v-for="(tag, index) in tags" :key="index" :class="{'active':tag.checked}">{{tag.name}}</button>
     </div>
-    <button @click="goHome" class="ok-button">EntaMermoryを始める</button>
+    <button @click="dataRegister" class="ok-button">EntaMermoryを始める</button>
+    <input id="file" type="file" ref="file" @change="setImage" v-show="false"/>
   </div>
 </template>
 
@@ -28,11 +23,61 @@
     },
     data () {
       return{
-
+        introduction:'',
+        image:'',
+        preview:'',
+        tags:
+        [
+          { name: 'アニメ', checked: false  },
+          { name: '映画', checked: false },
+          { name: 'ゲーム', checked: false },
+          { name: 'アクション', checked: false  },
+          { name: '恋愛', checked: false },
+          { name: 'ホラー', checked: false },
+          { name: 'SF', checked: false  },
+        ],
+        selectTags:[],
+        tagActive:false,
       }
     },
     methods:{
       goHome () {
+        this.$router.push('/')
+      },
+      // 画像選択起動
+      onSetImg () {
+        const file = this.$refs.file
+        file.click();
+      },
+      // 画像プレビュー表示
+      setImage (e) {
+        this.image = e.target.files[0]
+        this.preview = URL.createObjectURL(this.image)
+        const userImage = this.$refs.image
+        userImage.classList.add('image')
+      },
+      // タグの選択
+      selectTag (tag, index) {
+        // タグのスタイル変更
+        this.tags.forEach((tag, tagIndex) => {
+          if (tagIndex === index) {
+            tag.checked = !tag.checked
+          }
+        })
+        if (this.selectTags.indexOf(tag.name) === -1) {
+          this.selectTags.push(tag.name)
+        }else{
+          const num = this.selectTags.indexOf(tag.name)
+          this.selectTags.splice(num, 1)
+        }
+      },
+      async dataRegister () {
+        const data = {
+          tags:this.selectTags,
+          image:this.image,
+          introduction:this.introduction
+        }
+        await this.$store.dispatch('auth/dataRegister', data)
         this.$router.push('/')
       }
     },
@@ -41,6 +86,7 @@
 
 <style scoped lang="scss">
 @import '../assets/sass/mixins';
+@import '../assets/sass/variables.scss';
 
 h1{
   text-align: center;
@@ -55,10 +101,27 @@ h1{
   background: white;
   border-radius: 50%;
   margin: 0 auto;
+  position: relative;
   &:hover{
     cursor: pointer;
-    border:1px solid violet;
-    box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.349);
+  }
+  &:hover > span{
+    transition: opacity .3s ease;
+    opacity: 1;
+  }
+  .image{
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  span{
+    position: absolute;
+    z-index: 2;
+    top: 70px;
+    left: 80px;
+    font-size: 40px;
+    opacity: 0.7;
   }
 }
 textarea{
@@ -78,6 +141,10 @@ textarea{
     margin: 0 auto;
     text-align: center;
     @include TagsButton(40px);
+    .active{
+      background: $header-footer-color;
+      color: white;
+    }
   }
 .ok-button{
   display: block;

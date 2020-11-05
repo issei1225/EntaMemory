@@ -38,16 +38,13 @@
     },
     computed:{
       width () {
-        return this.$store.getters['user/width']
+        return this.$store.getters['layout/width']
       },
       modal () {
-        return this.$store.getters['user/modal']
+        return this.$store.getters['layout/modal']
       },
     },
     methods:{
-      // ofModal () {
-      //   this.stateModal = false
-      // }
     },
   }
 </script>

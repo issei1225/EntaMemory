@@ -28,12 +28,12 @@ export default {
   },
   computed:{
     width () {
-      return this.$store.getters['user/width']
+      return this.$store.getters['layout/width']
     }
   },
   methods:{
     handleResize () {
-      this.$store.commit('user/changeWidth', innerWidth)
+      this.$store.commit('layout/changeWidth', innerWidth)
     }
   },
   mounted () {

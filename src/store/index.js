@@ -1,12 +1,20 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import {auth, user} from './modules'
+import {auth, user, layout} from './modules'
+import createPersistedState from "vuex-persistedstate";
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules: {
     auth,
-    user
-  }
+    user,
+    layout
+  },
+  strict: true,
+  plugins: [createPersistedState({
+      key: 'EntaMemory',
+      paths: ['auth'],
+      storage: window.sessionStorage
+  })]
 });

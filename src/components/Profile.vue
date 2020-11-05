@@ -12,11 +12,29 @@
         <button>アニメ</button>
         <button>アニメ</button>
       </div>
+      <p>
+        <!-- {{userData}} -->
+      </p>
     </section>
   </div>
 </template>
 
 <script>
+  export default {
+    data () {
+      return{
+
+      }
+    },
+    computed:{
+      userData () {
+        return this.$store.getters['auth/userData']
+      }
+    },
+    methods:{
+
+    }
+  }
 </script>
 
 <style scoped lang="scss">

@@ -2,18 +2,26 @@
 <div>
   <div class="container">
     <router-link class="title" to="/">EntaMemory</router-link>
+    <!-- メニュー -->
     <div class="nav-right" v-if="width">
-      <router-link v-if="active" class="link" to="loginregister">Login/Register</router-link>
-      <router-link v-else class="link" to="mypage">Name</router-link>
+      <router-link v-if="!active" class="link" to="loginregister">Login/Register</router-link>
+      <span v-if="active" @click="logout" class="link">Logout</span>
+      <router-link v-if="active" class="link" to="mypage">MyPage</router-link>
       <button class="submit" @click="onPostModal">Post your impressions</button>
     </div>
+    <!-- スマホサイズメニュー -->
     <div class="nav-right" v-if="!width">
        <span @click="changeDrop"><font-awesome-icon icon="bars"/></span>
     </div>
-    <ul class="drop-menu" v-if="!width && drop">
-      <li>Post your impressions</li>
-      <li>Login/Register</li>
-    </ul>
+    <!-- ドロップダウンメニュー -->
+    <transition>
+      <ul class="drop-menu" v-if="!width && drop">
+        <li @click="onPostModal">Post your impressions</li>
+        <li><router-link v-if="!active" class="link" to="loginregister">Login/Register</router-link></li>
+        <li><span v-if="active" class="link" @click="logout">Logout</span></li>
+
+      </ul>
+    </transition>
   </div>
   <div class="nav-padding">
 
@@ -22,7 +30,6 @@
 </template>
 
 <script>
-
   export default {
     data () {
       return{
@@ -36,16 +43,25 @@
       },
       // ウィンドウ幅
       width () {
-        return this.$store.getters['user/width']
+        return this.$store.getters['layout/width']
       },
     },
     methods:{
+      // 投稿モーダル切り替え
       onPostModal () {
-        this.$store.commit('user/changeModal')
+        if(!this.active){
+          alert('login or register')
+        }else{
+          this.$store.commit('layout/changeModal')
+        }
       },
       changeDrop () {
         this.drop = !this.drop
       },
+      logout () {
+        this.$store.commit('auth/logout')
+        // this.$router.push('/')
+      }
     }
   }
 </script>
@@ -83,6 +99,8 @@
         margin-right: 20px;
         text-decoration: none;
         color: rgba(211, 211, 211, 0.966);
+        background: transparent;
+        border: none;
         &:hover{
           cursor: pointer;
           transition: color .3s ease;
@@ -102,6 +120,13 @@
         }
       }
     }
+    .v-enter-active, .v-leave-active {
+      transition: opacity .3s;
+    }
+
+    .v-enter, .v-leave-to {
+      opacity: 0;
+    }
     .drop-menu{
       background-color: $header-footer-color;
       color: rgba(200, 200, 200, 0.966);
@@ -112,6 +137,14 @@
       li{
         padding-bottom: 5px;
         font-size: 16px;
+        .link{
+          color: rgba(211, 211, 211, 0.966);
+          text-decoration: none;
+          &:hover{
+            cursor: pointer;
+            color: white;
+          }
+        }
         &:hover{
           cursor: pointer;
           color: white;

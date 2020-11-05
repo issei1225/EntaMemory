@@ -46,15 +46,15 @@ import SmartPostModal from '@/components/SmartPostModal.vue'
     },
     computed:{
       width () {
-        return this.$store.getters['user/width']
+        return this.$store.getters['layout/width']
       },
       modal () {
-        return this.$store.getters['user/modal']
+        return this.$store.getters['layout/modal']
       },
     },
     methods:{
       ofModal () {
-        this.$store.commit('user/changeModal')
+        this.$store.commit('layout/changeModal')
       }
     },
   }

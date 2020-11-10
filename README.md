@@ -1,3 +1,4 @@
+あああ
 # entamemory
 
 ## Project setup

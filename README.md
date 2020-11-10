@@ -12,10 +12,10 @@
 他ユーザーや自分の投稿を見ることができ、投稿をジャンル別に表示することができる
 
 # 使用技術
-vue.js
-firebase
-sass
-vscode
+vue.js/
+firebase/
+sass/
+vscode/
 
 # 作成期間
 約２週間

@@ -8,7 +8,7 @@
       <router-view/>
     </div>
       <footer>
-        <p>© 2018-present Issei Tashiro</p>
+        <p>© 2020-present Issei Tashiro</p>
       </footer>
   </div>
 </template>
@@ -29,6 +29,9 @@ export default {
   computed:{
     width () {
       return this.$store.getters['layout/width']
+    },
+    postData () {
+      return this.$store.getters['user/postData']
     }
   },
   methods:{
@@ -37,10 +40,14 @@ export default {
     }
   },
   mounted () {
+    console.log('created')
     window.addEventListener('resize', this.handleResize)
   },
   beforeDestroy () {
     window.removeEventListener('resize', this.handleResize)
+  },
+  async created () {
+    await this.$store.dispatch('user/downloadPost')
   }
 }
 </script> 
@@ -48,17 +55,20 @@ export default {
 <style lang="scss">
   html, body, #app{
     background-color: #F2F4FB;
-    height: 100%;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
     .router-container{
       margin: 0 auto;
+      width: 100%;
       max-width: 1400px;
     }
     footer{
       width: 100%;
       height: 65px;
       background: #3f3f3f;
-      margin-top: 50px;
+      margin-top: auto;
       p{
         color: white;
         text-align: center;

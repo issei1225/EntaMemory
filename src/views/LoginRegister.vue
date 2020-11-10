@@ -3,37 +3,35 @@
   <!-- ログインフォーム -->
   <form class="container" v-if="login" onSubmit="return false">
     <div class="login-register">
-      <span @click="changeLogin" :class={active:login} class="login">Login</span>
-      <span @click="changeRegister" :class={active:register} class="register">Register</span>
+      <span @click="changeLogin" :class={active:login} class="login">ログイン</span>
+      <span @click="changeRegister" :class={active:register} class="register">会員登録</span>
     </div>
-    <label> Email </label>
-    <input v-model="loginEmail" type="text">
-    <label> Password </label>
-    <input v-model="loginPass" type="text">
-    <button @click="onLogin" type="submit">Login</button>
+    <label> メールアドレス </label>
+    <input v-model="loginEmail" type="text" placeholder="test@test.com">
+    <label> パスワード </label>
+    <input v-model="loginPass" type="password" placeholder="test1234">
+    <button @click="onLogin" type="submit">ログイン</button>
   </form>
   <!-- 登録フォーム -->
   <form class="container" v-else onSubmit="return false">
     <div class="login-register">
       <span @click="changeLogin" :class={active:login} class="login">Login</span>
-      <span @click="changeRegister" :class={active:register} class="register">Register</span>
+      <span @click="changeRegister" :class={active:register} class="register">会員登録</span>
     </div>
-    <label> UserName </label>
+    <label> ユーザーネーム </label>
     <input v-model="name" type="text">
-    <label> Email</label>
-    <input v-model="registerEmail" type="text">
-    <label> Password </label>
-    <input v-model="registerPass" type="text">
-    <button @click="onRegister" type="submit">Register</button>
+    <label> メールアドレス</label>
+    <input v-model="registerEmail" type="text" placeholder="test@test.com">
+    <label> パスワード </label>
+    <input v-model="registerPass" type="password" placeholder="test1234">
+    <button @click="onRegister" type="submit">登録</button>
   </form>
 
-  <button class="guest-login">GuestLogin</button>
+  <button class="guest-login" @click="guestLogin">ゲストログイン</button>
 </div>
 </template>
 
 <script>
-
-
   export default {
     data () {
       return{
@@ -58,24 +56,65 @@
       },
       // ユーザー情報登録ページへ遷移
       async onRegister () {
-        const registerData = {
-          name:this.name,
-          registerEmail:this.registerEmail,
-          registerPass:this.registerPass,
+        if(this.name != '' && this.registerEmail != '' && this.registerPass != '') {
+          const registerData = {
+            name:this.name,
+            registerEmail:this.registerEmail,
+            registerPass:this.registerPass,
+          }
+          try{
+            await this.$store.dispatch('auth/register', registerData)
+            this.$router.push('newuser')
+          }catch(e){
+            // 会員登録エラー時処理
+            if(e.message == 'The email address is badly formatted.'){
+              alert('メールアドレスかパスワードが正しく入力されていません');
+            }else if(e.message == 'The email address is already in use by another account..'){
+              alert('既に存在するアカウントです');
+            }else if (e.message == 'Password should be at least 6 characters'){
+              alert('パスワードは6文字以上にしてください');
+            }
+          }
+        }else{
+          alert('未入力項目があります')
         }
-        await this.$store.dispatch('auth/register', registerData)
-        console.log('いける')
-        this.$router.push('newuser')
       },
       // ログイン処理、ホーム画面遷移
       async onLogin () {
+        if(this.loginEmail != '' && this.loginPass) {
+          const loginData = {
+            loginEmail:this.loginEmail,
+            loginPass:this.loginPass,
+          }
+          try{
+            await this.$store.dispatch('auth/login', loginData)
+            this.$router.push('/')
+          }catch(e){
+            //  ログインエラー時の各メッセージ
+            if(e.message == 'The email address is badly formatted.'){
+              alert('メールアドレスの形式が正しくありません');
+            }else if(e.message == 'There is no user record corresponding to this identifier. The user may have been deleted.'){
+              alert('存在しないアカウントです');
+            }else if (e.message == 'The password is invalid or the user does not have a password.'){
+              alert('パスワードが無効です');
+            }
+          }
+        }else{
+          alert('未入力項目があります')
+        }
+      },
+      // ゲストログイン
+      async guestLogin () {
         const loginData = {
-          loginEmail:this.loginEmail,
-          loginPass:this.loginPass,
+          loginEmail:'guest@test.com',
+          loginPass:'guest1234fesdfse',
         }
         await this.$store.dispatch('auth/login', loginData)
         this.$router.push('/')
       },
+    },
+    created () {
+      this.$store.commit('layout/changePath', this.$route.path)
     }
   }
 </script>
@@ -99,6 +138,9 @@
     cursor: pointer;
     transition: opacity .3s ease;
     opacity: 0.7;
+  }
+  &:focus{
+    outline: none;
   }
 }
 .container{

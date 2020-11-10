@@ -1,10 +1,8 @@
 <template>
-  <div>
     <div class="max-width">
       <Tags />
       <Posts />
     </div>
-  </div>
 </template>
 
 <script>
@@ -15,14 +13,9 @@ import Posts from '@/components/Posts.vue'
       Tags,
       Posts
     },
-    data () {
-      return{
-
-      }
-    },
-    methods:{
-
-    },
+    created () {
+      this.$store.commit('layout/changePath', this.$route.path)
+    }
   }
 </script>
 
@@ -31,6 +24,7 @@ import Posts from '@/components/Posts.vue'
 .max-width{
   width: 90%;
   margin: 0 auto;
+  height: 100%;
 }
 </style>
 

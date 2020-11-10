@@ -4,10 +4,10 @@
     <router-link class="title" to="/">EntaMemory</router-link>
     <!-- メニュー -->
     <div class="nav-right" v-if="width">
-      <router-link v-if="!active" class="link" to="loginregister">Login/Register</router-link>
-      <span v-if="active" @click="logout" class="link">Logout</span>
-      <router-link v-if="active" class="link" to="mypage">MyPage</router-link>
-      <button class="submit" @click="onPostModal">Post your impressions</button>
+      <router-link v-if="!active" class="link" to="loginregister">ログイン/会員登録</router-link>
+      <span v-if="active" @click="logout" class="link">ログアウト</span>
+      <router-link v-if="active" class="link" to="mypage">マイページ</router-link>
+      <button v-if="active" class="submit" @click="onPostModal">感想を投稿</button>
     </div>
     <!-- スマホサイズメニュー -->
     <div class="nav-right" v-if="!width">
@@ -16,9 +16,10 @@
     <!-- ドロップダウンメニュー -->
     <transition>
       <ul class="drop-menu" v-if="!width && drop">
-        <li @click="onPostModal">Post your impressions</li>
-        <li><router-link v-if="!active" class="link" to="loginregister">Login/Register</router-link></li>
-        <li><span v-if="active" class="link" @click="logout">Logout</span></li>
+        <li @click="changeDrop"><router-link v-if="!active" class="link" to="loginregister">ログイン/会員登録</router-link></li>
+        <li v-if="active"  @click="onPostModal">感想を投稿</li>
+        <li v-if="active"><router-link class="link" to="mypage">マイページ</router-link></li>
+        <li v-if="active"><span class="link" @click="logout">ログアウト</span></li>
 
       </ul>
     </transition>
@@ -45,12 +46,16 @@
       width () {
         return this.$store.getters['layout/width']
       },
+      // 現在のパス
+      path () {
+        return this.$store.getters['layout/path']
+      },
     },
     methods:{
       // 投稿モーダル切り替え
       onPostModal () {
         if(!this.active){
-          alert('login or register')
+          alert('投稿をするにはログインが必要です')
         }else{
           this.$store.commit('layout/changeModal')
         }
@@ -59,10 +64,16 @@
         this.drop = !this.drop
       },
       logout () {
-        this.$store.commit('auth/logout')
-        // this.$router.push('/')
+        const resolve = confirm('ログアウトしますか？')
+        if (resolve) {
+          this.$store.commit('auth/logout')
+          console.log(this.path)
+          if(this.path != '/') {
+            this.$router.push('/')
+          }
+        }
       }
-    }
+    },
   }
 </script>
 

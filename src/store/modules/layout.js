@@ -4,6 +4,7 @@ export default {
   state: {
     width:innerWidth,
     modal:false,
+    path:'',
   },
 
   getters: {
@@ -19,6 +20,10 @@ export default {
     modal (state) {
       return state.modal
     },
+    // 現在のパス
+    path (state) {
+      return state.path
+    },
   },
   mutations: {
     // ウィンドウ幅監視
@@ -28,7 +33,11 @@ export default {
     // モーダルウィンドウ表示切り替え
     changeModal (state) {
       state.modal = !state.modal
-    }
+    },
+    // 現在のパスを取得
+    changePath (state, path) {
+      state.path = path
+    },
   },
   actions: {
 

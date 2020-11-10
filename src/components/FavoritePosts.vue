@@ -1,6 +1,7 @@
 <template>
-  <ul id="ul">
-    <li @click.self="goDatails(post)" :id="index" class="box" v-for="(post, index) in postData" :key="index">
+<div>
+  <ul id="ul" v-show="favoritePost.length !== 0">
+    <li @click.self="goDatails(post)" :id="index" class="box" v-for="(post, index) in favoritePost" :key="index">
       <div @click.self="goDatails(post)" class="img-container">
         <img @click.self="goDatails(post)" :src="post.image">
         <button @click="favorite(post.postId)" class="favorite"><font-awesome-icon :class="{'active':post.favorite.indexOf(userData.uid) != -1}" class="star" icon="star"/>お気に入り：{{post.favorite.length}}</button>
@@ -12,56 +13,41 @@
             <span @click.self="goDatails(post)">{{post.name}}</span>
           </div>
           <h1 @click.self="goDatails(post)">{{post.postTitle}}</h1>
-          <button @click="goTagPosts(tag)" v-for="(tag, index) in post.selectTags" :key="index">{{tag}}</button>
+          <button v-for="(tag, index) in post.selectTags" :key="index">{{tag}}</button>
         </div>
       </div>
     </li>
   </ul>
-
+  <h1 class="none" v-show="favoritePost.length === 0">お気に入りはありません</h1>
+</div>
 </template>
 
 <script>
-
   export default {
     data () {
       return{
+        tag:'',
       }
     },
     computed:{
       postData () {
         return this.$store.getters['user/postData']
       },
-      downState () {
-        return this.$store.getters['user/downState']
-      },
       userData () {
         return this.$store.getters['auth/userData']
       },
-      active () {
-        return this.$store.getters['auth/active']
-      },
-    },
-    methods:{
-      goDatails (post) {
-        this.$store.commit('user/selectPostData', post)
-        this.$router.push('/details')
-      },
-      favorite (id) {
-        if(this.active){
-          const favoriteData = 
-          {
-            id:id,
-            uid:this.userData.uid
+      favoritePost () {
+        let favoritePost = []
+        this.postData.forEach(post => {
+          const resolve = post.favorite.indexOf(this.userData.uid)
+          if(resolve != -1){
+            favoritePost.push(post)
           }
-          this.$store.commit('user/changeFavorite', favoriteData)
-          this.$store.dispatch('user/uploadFavorite')
-        }else{
-          alert('お気に入り登録をするにはログインが必要です')
-        }
+        });
+        return favoritePost
       },
-      // 選択したタグ投稿一覧へ遷移
-      goTagPosts (tag) {
-        this.$router.push({ path: 'tagpage', query: { tag: tag } })
+      downState () {
+        return this.$store.getters['user/downState']
       },
     },
     watch :{
@@ -80,6 +66,21 @@
         }
       }
     },
+    methods:{
+      goDatails (post) {
+        this.$store.commit('user/selectPostData', post)
+        this.$router.push('/details')
+      },
+      favorite (id) {
+        const favoriteData = 
+        {
+          id:id,
+          uid:this.userData.uid
+        }
+        this.$store.commit('user/changeFavorite', favoriteData)
+        this.$store.dispatch('user/uploadFavorite')
+      },
+    },
     // 空の要素を追加する(ページ遷移時)
     mounted () {
       if(this.downState){
@@ -91,7 +92,10 @@
           ul.appendChild(li)
         })
       }
-    }
+    },
+    created () {
+      this.tag = this.$route.query.tag
+   }
   }
 </script>
 
@@ -102,17 +106,38 @@
   ul{
     @include topLayout(32%, space-between);
   }
+  .none{
+    font-size: 24px;
+    color: black;
+    text-align: center;
+    font-weight: normal;
+    margin-top: 30px;
+  }
 }
 // タブレットサイズ
 @media (min-width: 641px) and (max-width: 1140px){
   ul{
     @include topLayout(48%, space-between);
   }
+  .none{
+    font-size: 24px;
+    color: black;
+    text-align: center;
+    font-weight: normal;
+    margin-top: 30px;
+  }
 }
 // スマホサイズ
 @media (max-width:640px) {
   ul{
     @include topLayout(100%, center);
+  }
+  .none{
+    font-size: 20px;
+    color: black;
+    text-align: center;
+    font-weight: normal;
+    margin-top: 30px;
   }
 }
 

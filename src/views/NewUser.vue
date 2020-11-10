@@ -34,6 +34,7 @@
           { name: 'アクション', checked: false  },
           { name: '恋愛', checked: false },
           { name: 'ホラー', checked: false },
+          { name: 'スポーツ', checked: false },
           { name: 'SF', checked: false  },
         ],
         selectTags:[],
@@ -81,6 +82,9 @@
         this.$router.push('/')
       }
     },
+    created () {
+      this.$store.commit('layout/changePath', this.$route.path)
+    }
   }
 </script>
 

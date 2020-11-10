@@ -1,6 +1,7 @@
 <template>
-  <ul id="ul">
-    <li @click.self="goDatails(post)" :id="index" class="box" v-for="(post, index) in postData" :key="index">
+<div>
+  <ul id="ul" v-show="selectTagPost.length !== 0">
+    <li @click.self="goDatails(post)" :id="index" class="box" v-for="(post, index) in selectTagPost" :key="index">
       <div @click.self="goDatails(post)" class="img-container">
         <img @click.self="goDatails(post)" :src="post.image">
         <button @click="favorite(post.postId)" class="favorite"><font-awesome-icon :class="{'active':post.favorite.indexOf(userData.uid) != -1}" class="star" icon="star"/>お気に入り：{{post.favorite.length}}</button>
@@ -12,24 +13,35 @@
             <span @click.self="goDatails(post)">{{post.name}}</span>
           </div>
           <h1 @click.self="goDatails(post)">{{post.postTitle}}</h1>
-          <button @click="goTagPosts(tag)" v-for="(tag, index) in post.selectTags" :key="index">{{tag}}</button>
+          <button v-for="(tag, index) in post.selectTags" :key="index">{{tag}}</button>
         </div>
       </div>
     </li>
   </ul>
-
+  <h1 class="none" v-show="selectTagPost.length === 0">投稿はありません</h1>
+</div>
 </template>
 
 <script>
-
   export default {
     data () {
       return{
+        tag:'',
       }
     },
     computed:{
       postData () {
         return this.$store.getters['user/postData']
+      },
+      selectTagPost () {
+        let test = []
+        this.postData.forEach(element => {
+          const num = element.selectTags.indexOf(this.tag)  
+          if (num != -1) {
+            test.push(element)
+          }
+        });
+        return test
       },
       downState () {
         return this.$store.getters['user/downState']
@@ -40,6 +52,22 @@
       active () {
         return this.$store.getters['auth/active']
       },
+    },
+    watch :{
+      downState (data) {
+        if (data) {
+          this.$nextTick(() => {
+            const test = document.getElementsByClassName('dummy-elements')
+            if(test.length != 0){
+              test[0].parentNode.removeChild(test[0])
+            }
+            const ul = document.getElementById('ul')
+            const li = document.createElement('li')
+            li.setAttribute('class', 'dummy-elements')
+            ul.appendChild(li)
+          })
+        }
+      }
     },
     methods:{
       goDatails (post) {
@@ -59,26 +87,6 @@
           alert('お気に入り登録をするにはログインが必要です')
         }
       },
-      // 選択したタグ投稿一覧へ遷移
-      goTagPosts (tag) {
-        this.$router.push({ path: 'tagpage', query: { tag: tag } })
-      },
-    },
-    watch :{
-      downState (data) {
-        if (data) {
-          this.$nextTick(() => {
-            const test = document.getElementsByClassName('dummy-elements')
-            if(test.length != 0){
-              test[0].parentNode.removeChild(test[0])
-            }
-            const ul = document.getElementById('ul')
-            const li = document.createElement('li')
-            li.setAttribute('class', 'dummy-elements')
-            ul.appendChild(li)
-          })
-        }
-      }
     },
     // 空の要素を追加する(ページ遷移時)
     mounted () {
@@ -91,7 +99,10 @@
           ul.appendChild(li)
         })
       }
-    }
+    },
+    created () {
+      this.tag = this.$route.query.tag
+   }
   }
 </script>
 
@@ -102,17 +113,35 @@
   ul{
     @include topLayout(32%, space-between);
   }
+  .none{
+    font-size: 24px;
+    color: black;
+    text-align: center;
+    font-weight: normal;
+  }
 }
 // タブレットサイズ
 @media (min-width: 641px) and (max-width: 1140px){
   ul{
     @include topLayout(48%, space-between);
   }
+  .none{
+    font-size: 24px;
+    color: black;
+    text-align: center;
+    font-weight: normal;
+  }
 }
 // スマホサイズ
 @media (max-width:640px) {
   ul{
     @include topLayout(100%, center);
+  }
+  .none{
+    font-size: 20px;
+    color: black;
+    text-align: center;
+    font-weight: normal;
   }
 }
 

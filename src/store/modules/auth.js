@@ -56,7 +56,7 @@ export default {
     },
   },
   actions: {
-    // 新規ユーザー登録＆ログイン処理
+    // 新規登録
     async register (context, data) {
       const result = await firebase.auth().createUserWithEmailAndPassword(data.registerEmail, data.registerPass)
       const userData = {
@@ -67,7 +67,7 @@ export default {
       context.commit('changeActive')
       context.commit('setUidAndName', userData)
     },
-    // ログイン処理
+    // ログイン&ゲストログイン
     async login (context, data) {
       const resolve = await firebase.auth().signInWithEmailAndPassword(data.loginEmail, data.loginPass)
       const uid  = resolve.user.uid

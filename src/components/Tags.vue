@@ -1,18 +1,18 @@
 <template>
   <div class="container">
     <div class="tags">
-      <h1>Tags</h1>
+      <h1>タグ</h1>
       <div class="buttons">
-        <button>アニメ</button>
-        <button>ゲーム</button>
-        <button>映画</button>
-        <button>アクション</button>
-        <button>恋愛</button>
-        <button>スポーツ</button>
-        <button>SF</button>
-        <button>ホラー</button>
-        <button>ネタバレあり</button>
-        <button>ネタバレなし</button>
+        <router-link tag="button" :to="{name: 'TagPage', query: {tag: 'アニメ'}}">アニメ</router-link>
+        <router-link tag="button" :to="{name: 'TagPage', query: {tag: '映画'}}">映画</router-link>
+        <router-link tag="button" :to="{name: 'TagPage', query: {tag: 'ゲーム'}}">ゲーム</router-link>
+        <router-link tag="button" :to="{name: 'TagPage', query: {tag: 'アクション'}}">アクション</router-link>
+        <router-link tag="button" :to="{name: 'TagPage', query: {tag: '恋愛'}}">恋愛</router-link>
+        <router-link tag="button" :to="{name: 'TagPage', query: {tag: 'スポーツ'}}">スポーツ</router-link>
+        <router-link tag="button" :to="{name: 'TagPage', query: {tag: 'SF'}}">SF</router-link>
+        <router-link tag="button" :to="{name: 'TagPage', query: {tag: 'ホラー'}}">ホラー</router-link>
+        <router-link tag="button" :to="{name: 'TagPage', query: {tag: 'ネタバレあり'}}">ネタバレあり</router-link>
+        <!-- <router-link tag="button" :to="{name: 'TagPage', query: {tag: 'ネタバレあり'}}">ネタバレなし</router-link> -->
       </div>
     </div>
   </div>

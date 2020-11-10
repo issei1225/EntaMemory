@@ -2,21 +2,20 @@
   <div class="container">
     <Profile />
     <MyPageBar />
-    <div class="posts-container">
-      <Posts />
-    </div>
   </div>
 </template>
 
 <script>
 import Profile from '@/components/Profile.vue'
 import MyPageBar from '@/components/MyPageBar.vue'
-import Posts from '@/components/Posts.vue'
+
  export default {
    components:{
      Profile,
      MyPageBar,
-     Posts
+   },
+   created () {
+     this.$store.commit('layout/changePath', this.$route.path)
    }
  }
 </script>

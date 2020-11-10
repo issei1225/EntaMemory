@@ -1,19 +1,18 @@
 <template>
   <div class="container">
     <section class="profile-container">
-      <div class="img-container"></div>
+      <div class="img-container">
+        <img :src="userData.image" alt="">
+      </div>
       <div class="profile-right">
-        <h1>Tanjiro Kamado</h1>
-        <p>kisatutai mizunoto imoutono nezuko wo ningen ni modosutame katudoutyuu</p>
-        <span>likeTags</span>
-        <button>アニメ</button>
-        <button>アニメ</button>
-        <button>アニメ</button>
-        <button>アニメ</button>
-        <button>アニメ</button>
+        <h1>{{userData.name}}</h1>
+        <p>{{userData.introduction}}</p>
+        <span>興味のあるタグ</span>
+        <ul>
+          <li v-for="(tag, index) in userData.tags" :key="index">{{tag}}</li>
+        </ul>
       </div>
       <p>
-        <!-- {{userData}} -->
       </p>
     </section>
   </div>
@@ -53,21 +52,47 @@
     .img-container{
       width: 150px;
       height: 150px;
-      background: violet;
       border-radius: 50%;
       margin: 13px 50px 0px 0px;
+      img{
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+      }
     }
     h1{
       font-size: 22px;
       margin: 10px 0px;
+      color: black;
     }
     p{
       margin: 10px 0px;
+      color: black;
     }
     span{
       display: block;
+      color: black;
+      font-weight: bold;
     }
-    @include TagsButton(40px);
+    ul{
+      list-style: none;
+      padding: 0;
+      li{
+        display: inline-block;
+        padding:5px 20px;
+        font-size: 15px;
+        color: #727272;
+        background: rgba(255, 255, 255, 0);
+        margin:10px 10px 0px 0px;
+        border: 1px solid #727272;
+        border-radius: 2px;
+        // &:hover{
+        //   cursor: pointer;
+        //   transition: all .3s ease;
+        // }
+      }
+    }
   }
 }
 @media (max-width: 640px) {
@@ -78,20 +103,46 @@
     .img-container{
       width: 150px;
       height: 150px;
-      background: violet;
       border-radius: 50%;
+      margin: 13px 50px 0px 0px;
+      img{
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+      }
     }
     h1{
       font-size: 22px;
       margin: 10px 0px;
+      color: black;
     }
     p{
       margin: 10px 0px;
+      color: black;
     }
     span{
       display: block;
+      color: black;
     }
-    @include TagsButton(40px);
+    ul{
+      list-style: none;
+      padding: 0;
+      li{
+        display: inline-block;
+        padding:5px 20px;
+        font-size: 15px;
+        color: #727272;
+        background: rgba(255, 255, 255, 0);
+        margin:10px 10px 0px 0px;
+        border: 1px solid #727272;
+        border-radius: 2px;
+        &:hover{
+          cursor: pointer;
+          transition: all .3s ease;
+        }
+      }
+    }
   }
 }
 </style>

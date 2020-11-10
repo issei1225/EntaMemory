@@ -14,7 +14,7 @@ export default new Vuex.Store({
   strict: true,
   plugins: [createPersistedState({
       key: 'EntaMemory',
-      paths: ['auth'],
+      paths: ['auth', 'user'],
       storage: window.sessionStorage
   })]
 });

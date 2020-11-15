@@ -21,6 +21,7 @@ import TagPosts from '@/components/TagPosts.vue'
      }
    },
    created () {
+     //  現在のページを取得
      this.$store.commit('layout/changePath', this.$route.path)
      this.title = this.$route.query.tag
    }

@@ -48,12 +48,15 @@
       }
     },
     computed:{
+      // 画面幅
       width () {
         return this.$store.getters['layout/width']
       },
+      // モーダルウィンドウのブール値
       modal () {
         return this.$store.getters['layout/modal']
       },
+      // ログイン中のユーザーデータ
       userData () {
         return this.$store.getters['auth/userData']
       },

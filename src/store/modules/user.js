@@ -11,23 +11,29 @@ export default {
   },
 
   getters: {
+    // すべての投稿データ
     postData (state) {
       return state.postData
     },
+    // 選択した投稿データ
     selectPost (state) {
       return state.selectPost
     },
+    // データのダウンロードが完了しているか
     downState (state) {
       return state.downState
     },
   },
   mutations: {
+    // すべての投稿データを変更
     setPostData (state, data) {
       state.postData = data
     },
+    // 選択した投稿データを変更
     selectPostData (state, data) {
       state.selectPost = data
     },
+    // データのダウンロードが完了しているかを変更
     changeDownState (state, data) {
       state.downState = data
     },

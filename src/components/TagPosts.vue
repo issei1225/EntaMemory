@@ -30,9 +30,11 @@
       }
     },
     computed:{
+      // すべての投稿データ
       postData () {
         return this.$store.getters['user/postData']
       },
+      // 特定のタグのついた投稿を取得
       selectTagPost () {
         let test = []
         this.postData.forEach(element => {
@@ -46,9 +48,11 @@
       downState () {
         return this.$store.getters['user/downState']
       },
+      // ユーザデータ
       userData () {
         return this.$store.getters['auth/userData']
       },
+      // ログイン中か
       active () {
         return this.$store.getters['auth/active']
       },
@@ -70,10 +74,12 @@
       }
     },
     methods:{
+      // 投稿詳細ページへ
       goDatails (post) {
         this.$store.commit('user/selectPostData', post)
         this.$router.push('/details')
       },
+      // お気に入り機能
       favorite (id) {
         if(this.active){
           const favoriteData = 
@@ -91,7 +97,6 @@
     // 空の要素を追加する(ページ遷移時)
     mounted () {
       if(this.downState){
-        console.log('moutn')
           this.$nextTick(() => {
           const ul = document.getElementById('ul')
           const li = document.createElement('li')
@@ -101,6 +106,7 @@
       }
     },
     created () {
+      // タグ名取得
       this.tag = this.$route.query.tag
    }
   }

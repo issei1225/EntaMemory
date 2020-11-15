@@ -13,6 +13,7 @@ import Posts from '@/components/Posts.vue'
       Tags,
       Posts
     },
+    //  現在のページを取得
     created () {
       this.$store.commit('layout/changePath', this.$route.path)
     }

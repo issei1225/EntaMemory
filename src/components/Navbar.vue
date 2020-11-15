@@ -60,9 +60,11 @@
           this.$store.commit('layout/changeModal')
         }
       },
+      // ドロップダウン切り替え
       changeDrop () {
         this.drop = !this.drop
       },
+      // ログアウト
       logout () {
         const resolve = confirm('ログアウトしますか？')
         if (resolve) {

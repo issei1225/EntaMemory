@@ -3,24 +3,19 @@
     <img :src="post.image" alt="">
     <main>
       <h1 class="title">{{post.title}}</h1>
-
       <section class="user-container">
         <img class="user-image" :src="post.userImage">
         <span>{{post.name}}</span>
       </section>
-
       <section class="tags">
           <div class="buttons">
             <button class="tag" v-for="(tag, index) in post.selectTags" :key="index">{{tag}}</button>
           </div>
       </section>
-
-
       <section class="main-text">
         <h1 class="sub-title">{{post.postTitle}}</h1>
         <p>{{post.mainText}}</p>
       </section>
-
       <section class="comments">
         <h1>コメント</h1>
         <ul>
@@ -46,12 +41,15 @@
      }
    },
    computed:{
+    //  選択した投稿データ
      post () {
        return this.$store.getters['user/selectPost']
      },
+    //  ログイン中のユーザデータ
      userData () {
        return this.$store.getters['auth/userData']
      },
+    //  投稿削除を表示するか
      deletePremit () {
        if (this.post.uid === this.userData.uid) {
          return true
@@ -59,6 +57,7 @@
          return false
        }
      },
+    //  ログイン中か
       active () {
         return this.$store.getters['auth/active']
       },
@@ -90,6 +89,7 @@
        }
      }
    },
+  //  現在のページを取得
    created () {
      this.$store.commit('layout/changePath', this.$route.path)
    }

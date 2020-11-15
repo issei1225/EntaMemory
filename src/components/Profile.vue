@@ -26,13 +26,11 @@
       }
     },
     computed:{
+      // ユーザデータ
       userData () {
         return this.$store.getters['auth/userData']
       }
     },
-    methods:{
-
-    }
   }
 </script>
 

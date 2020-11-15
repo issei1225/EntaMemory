@@ -84,7 +84,6 @@
     // 空の要素を追加する(ページ遷移時)
     mounted () {
       if(this.downState){
-        console.log('moutn')
           this.$nextTick(() => {
           const ul = document.getElementById('ul')
           const li = document.createElement('li')

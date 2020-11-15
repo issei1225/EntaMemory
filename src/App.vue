@@ -27,22 +27,22 @@ export default {
     }
   },
   computed:{
+    // 画面幅
     width () {
       return this.$store.getters['layout/width']
     },
-    postData () {
-      return this.$store.getters['user/postData']
-    }
   },
   methods:{
+    // 画面幅変更感知
     handleResize () {
       this.$store.commit('layout/changeWidth', innerWidth)
     }
   },
+  // 画面幅変更感知
   mounted () {
-    console.log('created')
     window.addEventListener('resize', this.handleResize)
   },
+  // 画面幅変更感知
   beforeDestroy () {
     window.removeEventListener('resize', this.handleResize)
   },

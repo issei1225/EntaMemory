@@ -89,6 +89,7 @@
           try{
             await this.$store.dispatch('auth/login', loginData)
             this.$router.push('/')
+            alert('ログインしました')
           }catch(e){
             //  ログインエラー時の各メッセージ
             if(e.message == 'The email address is badly formatted.'){
@@ -111,8 +112,10 @@
         }
         await this.$store.dispatch('auth/login', loginData)
         this.$router.push('/')
+        alert('ログインしました')
       },
     },
+    //  現在のページを取得
     created () {
       this.$store.commit('layout/changePath', this.$route.path)
     }

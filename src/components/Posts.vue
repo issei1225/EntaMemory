@@ -28,24 +28,30 @@
       }
     },
     computed:{
+      // すべての投稿データ
       postData () {
         return this.$store.getters['user/postData']
       },
+      // 投稿のダウンロードが完了しているか
       downState () {
         return this.$store.getters['user/downState']
       },
+      // ユーザデータ
       userData () {
         return this.$store.getters['auth/userData']
       },
+      // ログイン中か
       active () {
         return this.$store.getters['auth/active']
       },
     },
     methods:{
+      // 投稿詳細ページへ
       goDatails (post) {
         this.$store.commit('user/selectPostData', post)
         this.$router.push('/details')
       },
+      // お気に入り機能
       favorite (id) {
         if(this.active){
           const favoriteData = 
@@ -65,6 +71,7 @@
       },
     },
     watch :{
+      // ダウンロードが完了していたら投稿の描画が完了後ダミー要素を追加する
       downState (data) {
         if (data) {
           this.$nextTick(() => {
@@ -83,7 +90,6 @@
     // 空の要素を追加する(ページ遷移時)
     mounted () {
       if(this.downState){
-        console.log('moutn')
           this.$nextTick(() => {
           const ul = document.getElementById('ul')
           const li = document.createElement('li')

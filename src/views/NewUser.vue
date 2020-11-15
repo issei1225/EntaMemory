@@ -1,13 +1,13 @@
 <template>
   <div>
-    <h1>Profile Image</h1>
+    <h1>プロフィール画像</h1>
     <div class="img-container" @click="onSetImg">
       <img ref="image" :src="preview" alt="">
       <span><font-awesome-icon icon="camera"/></span>
     </div>
-    <h1>Profile Text</h1>
+    <h1>自己紹介</h1>
     <textarea v-model="introduction"></textarea>
-    <h1>Profile Tags</h1>
+    <h1>興味のあるタグ</h1>
     <div class="buttons">
       <button @click="selectTag(tag,index)" v-for="(tag, index) in tags" :key="index" :class="{'active':tag.checked}">{{tag.name}}</button>
     </div>
@@ -72,6 +72,7 @@
           this.selectTags.splice(num, 1)
         }
       },
+      // ユーザー入力データを登録する
       async dataRegister () {
         const data = {
           tags:this.selectTags,
@@ -82,6 +83,7 @@
         this.$router.push('/')
       }
     },
+    //  現在のページを取得
     created () {
       this.$store.commit('layout/changePath', this.$route.path)
     }

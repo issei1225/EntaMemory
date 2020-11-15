@@ -14,6 +14,7 @@ import MyPageBar from '@/components/MyPageBar.vue'
      Profile,
      MyPageBar,
    },
+   //  現在のページを取得
    created () {
      this.$store.commit('layout/changePath', this.$route.path)
    }

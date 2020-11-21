@@ -30,12 +30,15 @@
       }
     },
     computed:{
+      // 投稿データ
       postData () {
         return this.$store.getters['user/postData']
       },
+      // ユーザデータ
       userData () {
         return this.$store.getters['auth/userData']
       },
+      // お気に入りした投稿
       favoritePost () {
         let favoritePost = []
         this.postData.forEach(post => {
@@ -46,11 +49,13 @@
         });
         return favoritePost
       },
+      // 投稿のダウンロードが完了しているか
       downState () {
         return this.$store.getters['user/downState']
       },
     },
     watch :{
+      // 投稿のダウンロードが完了していたらliを追加する
       downState (data) {
         if (data) {
           this.$nextTick(() => {
@@ -67,10 +72,12 @@
       }
     },
     methods:{
+      // 投稿詳細ページへ
       goDatails (post) {
         this.$store.commit('user/selectPostData', post)
         this.$router.push('/details')
       },
+      // いいねした機能
       favorite (id) {
         const favoriteData = 
         {
